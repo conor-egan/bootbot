@@ -5,8 +5,7 @@ import com.conor.bootbot.service.ChatService;
 //import com.conor.bootbot.service.PromptService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ChatController {
@@ -18,9 +17,9 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @GetMapping("/chat")
-    public String getChat(){
-        return chatService.sendMessage("Hello");
+    @PostMapping("/chat")
+    public String getChat(@RequestBody String message){
+        return chatService.sendMessage(message);
     }
 
 
