@@ -21,12 +21,13 @@ public class ChatService {
 
     private String apiKey = System.getenv("OPENAI_API_KEY");
 
-    private int apiTimeout = 5;
+    private int apiTimeout = 600000;
 
     private static final String GPT_MODEL = "gpt-3.5-turbo";
 
-    private static final String PROMPT_MESSAGE = "My name is Conor. Respond to all messages from now on greeting me personally by name, with a un" +
-            "ique greeting each time. You first response should include a short description of what you are.";
+//    private static final String PROMPT_MESSAGE = "My name is Conor. You should greet" +
+//            " me personally by name, with a un" +
+//            "ique greeting each time. You first response should include a short description of what you are. " ;
 
     @PostConstruct
     public void initGptService() {
@@ -36,11 +37,11 @@ public class ChatService {
         System.out.println("Connected to the OpenAI API");
     }
 
-    public String sendMessage(String message) {
+    public String sendMessage(String message, String PROMPT_MESSAGE) {
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
                 .model(GPT_MODEL)
-                .temperature(0.8)
+                .temperature(0.5)
                 .messages(
                         List.of(
                                 new ChatMessage("system", PROMPT_MESSAGE),
@@ -52,6 +53,8 @@ public class ChatService {
         openAiService.createChatCompletion(chatCompletionRequest).getChoices().forEach(choice -> {
             builder.append(choice.getMessage().getContent());
         });
+
+        System.out.print(builder.toString()+ "\n");
 
         return builder.toString();
     }
